@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { fetchImages } from 'components/services/api.jsx';
+// import { fetchImages } from 'components/services/api.jsx';
 // import {} from './App.styled';
 
 export class App extends Component {
