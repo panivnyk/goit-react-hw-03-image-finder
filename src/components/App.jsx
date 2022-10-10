@@ -8,7 +8,7 @@ import { Loader } from 'components/Loader/Loader.jsx';
 import { Button } from 'components/Button/Button.jsx';
 //5 - import { Modal } from 'components/Modal/Modal.jsx';
 
-import { Container } from 'services/Common.styled';
+import { Container, Notify } from 'services/Common.styled';
 
 export class App extends Component {
   state = {
@@ -22,7 +22,7 @@ export class App extends Component {
   componentDidUpdate(_, prevState) {
     const { page, query } = this.state;
     if (prevState.page !== page || prevState.query !== query) {
-      this.loadImages(query, page);
+      this.dataImages(query, page);
     }
   }
 
@@ -41,11 +41,11 @@ export class App extends Component {
     }));
   };
 
-  loadImages = async (query, page) => {
+  dataImages = async (query, page) => {
     this.setState({ isLoading: true });
     const data = await fetchImages(query, page);
 
-    if (page === 1 && data.total > 0) {
+    if (page === 1) {
       this.setState(() => ({
         total: data.total,
         images: [...data.hits],
@@ -68,22 +68,23 @@ export class App extends Component {
     return (
       <Container>
         <Searchbar onSubmit={this.handleInput} />
+        {isLoading && <Loader>Loading</Loader>}
         {/* <ImageGallery items={images} /> */}
 
         {images && (
           <>
-            {images.length === 0 && <p>Pictures not found</p>}
+            {images.length === 0 && <Notify>Pictures not found</Notify>}
 
             <ImageGallery items={images} />
 
             {isLoading && <Loader>Loading</Loader>}
-            {images.length > 0 && images.length !== total && (
+            {images.length > 0 && images.length < total && (
               <Button onLoadMore={this.loadMore} />
             )}
             {isLoading && <Loader>Loading</Loader>}
 
             {images.length === total && !!images.length && (
-              <p>Thats all pictures</p>
+              <Notify>No more pictures</Notify>
             )}
           </>
         )}

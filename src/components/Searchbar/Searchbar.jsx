@@ -22,7 +22,7 @@ export const Searchbar = ({ onSubmit }) => {
       <Formik initialValues={{ searchQuery: '' }} onSubmit={handleSubmit}>
         <SearchForm>
           <SearchFormButton type="submit">
-            <GoSearch />
+            <GoSearch size={24} />
             <SearchFormButtonLabel>Search</SearchFormButtonLabel>
           </SearchFormButton>
           <SearchFormInput

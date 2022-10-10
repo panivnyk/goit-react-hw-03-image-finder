@@ -1,9 +1,9 @@
 import { Blocks } from 'react-loader-spinner';
-// import { } from 'services/Common.styled';
+import { LoaderDiv } from 'services/Common.styled';
 
 export const Loader = () => {
   return (
-    <div>
+    <LoaderDiv>
       <Blocks
         visible={true}
         height="80"
@@ -12,6 +12,6 @@ export const Loader = () => {
         wrapperStyle={{}}
         wrapperClass="blocks-wrapper"
       />
-    </div>
+    </LoaderDiv>
   );
 };

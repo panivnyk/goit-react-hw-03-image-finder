@@ -9,39 +9,40 @@ import {
 
 export class ImageGalleryItem extends Component {
   state = {
-    modalOpen: false,
-  };
-  toggleModal = () => {
-    this.setState(({ modalOpen }) => ({ modalOpen: !modalOpen }));
+    showModal: false,
   };
 
   componentDidMount() {
-    window.addEventListener('keydown', this.onEscapeClick);
+    window.addEventListener('keydown', this.escapeClick);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.onEscapeClick);
+    window.removeEventListener('keydown', this.escapeClick);
   }
 
-  onEscapeClick = e => {
-    if (this.state.modalOpen) {
-      if (e.code === 'Escape') {
+  escapeClick = event => {
+    if (this.state.showModal) {
+      if (event.code === 'Escape') {
         this.toggleModal();
       }
     }
   };
 
-  handleBackdropClick = event => {
-    if (this.state.modalOpen) {
+  backdropClick = event => {
+    if (this.state.showModal) {
       if (event.currentTarget === event.target) {
         this.toggleModal();
       }
     }
   };
 
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
+  };
+
   render() {
     const { webformatURL, tags, largeImageURL } = this.props;
-    const { modalOpen } = this.state;
+    const { showModal } = this.state;
 
     return (
       <ImageGalleryItemLi>
@@ -50,11 +51,11 @@ export class ImageGalleryItem extends Component {
           alt={tags}
           onClick={this.toggleModal}
         />
-        {modalOpen && (
+        {showModal && (
           <Modal
             largeImageURL={largeImageURL}
             tags={tags}
-            onBackdropClick={this.handleBackdropClick}
+            backdropClick={this.backdropClick}
           />
         )}
       </ImageGalleryItemLi>

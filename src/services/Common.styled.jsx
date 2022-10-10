@@ -10,7 +10,10 @@ export const Container = styled.main`
   grid-gap: 16px;
   padding-bottom: 24px;
 `;
-
+export const Notify = styled.p`
+  text-align: center;
+  font-size: 24px;
+`;
 // /*
 //  * Стили компонента Searchbar
 //  */
@@ -180,4 +183,12 @@ export const ButtonLoadMore = styled.button`
   &:focus {
     background-color: #303f9f;
   }
+`;
+
+// /*
+// * Стили компонента Loader
+// */
+export const LoaderDiv = styled.div`
+  display: flex;
+  justify-content: center;
 `;

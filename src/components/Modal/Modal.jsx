@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 
 import { Overlay, ModalDiv } from 'services/Common.styled';
 
-export const Modal = ({ tags, largeImageURL, onBackdropClick }) => {
+export const Modal = ({ tags, largeImageURL, backdropClick }) => {
   return (
-    <Overlay onClick={onBackdropClick}>
+    <Overlay onClick={backdropClick}>
       <ModalDiv>
         <img src={largeImageURL} alt={tags} />
       </ModalDiv>
@@ -15,5 +15,5 @@ export const Modal = ({ tags, largeImageURL, onBackdropClick }) => {
 Modal.propTypes = {
   tags: PropTypes.string.isRequired,
   largeImageURL: PropTypes.string.isRequired,
-  onBackdropClick: PropTypes.func.isRequired,
+  backdropClick: PropTypes.func.isRequired,
 };
