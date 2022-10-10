@@ -1,31 +1,93 @@
 import { Component } from 'react';
-// import { fetchImages } from 'components/services/api.jsx';
-// import {} from './App.styled';
+
+import { fetchImages } from 'services/api.jsx';
+import { Searchbar } from 'components/Searchbar/Searchbar.jsx';
+import { ImageGallery } from 'components/ImageGallery/ImageGallery.jsx';
+// import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem.jsx';
+import { Loader } from 'components/Loader/Loader.jsx';
+import { Button } from 'components/Button/Button.jsx';
+//5 - import { Modal } from 'components/Modal/Modal.jsx';
+
+import { Container } from 'services/Common.styled';
 
 export class App extends Component {
   state = {
-    searchQuery: '',
-    currentPage: 1,
+    query: '',
+    page: 1,
+    images: null,
+    isLoading: false,
+    total: 0,
   };
 
   componentDidUpdate(_, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevState.query !== this.state.query
-    ) {
-      this.loadImages(this.state.query, this.state.page);
+    const { page, query } = this.state;
+    if (prevState.page !== page || prevState.query !== query) {
+      this.loadImages(query, page);
     }
   }
 
-  componentDidMount() {
-    fetch(
-      'https://pixabay.com/api/?key=29451964-958278d8f10d2abadadf36c5e&q=cat&image_type=photo&orientation=horizontal&per_page=12&page=1'
-    )
-      .then(res => res.json())
-      .then(console.log);
-  }
+  handleInput = e => {
+    this.setState({
+      page: 1,
+      query: e.searchQuery,
+      images: null,
+    });
+  };
+
+  loadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+      isLoading: true,
+    }));
+  };
+
+  loadImages = async (query, page) => {
+    this.setState({ isLoading: true });
+    const data = await fetchImages(query, page);
+
+    if (page === 1 && data.total > 0) {
+      this.setState(() => ({
+        total: data.total,
+        images: [...data.hits],
+        isLoading: false,
+      }));
+    } else {
+      this.setState(state => ({
+        images: [...state.images, ...data.hits],
+        isLoading: false,
+      }));
+    }
+  };
+
+  // onCloseModal = () => {
+  //   this.setState({ isModal: false });
+  // };
 
   render() {
-    return <div>test</div>;
+    const { images, isLoading, total } = this.state;
+    return (
+      <Container>
+        <Searchbar onSubmit={this.handleInput} />
+        {/* <ImageGallery items={images} /> */}
+
+        {images && (
+          <>
+            {images.length === 0 && <p>Pictures not found</p>}
+
+            <ImageGallery items={images} />
+
+            {isLoading && <Loader>Loading</Loader>}
+            {images.length > 0 && images.length !== total && (
+              <Button onLoadMore={this.loadMore} />
+            )}
+            {isLoading && <Loader>Loading</Loader>}
+
+            {images.length === total && !!images.length && (
+              <p>Thats all pictures</p>
+            )}
+          </>
+        )}
+      </Container>
+    );
   }
 }

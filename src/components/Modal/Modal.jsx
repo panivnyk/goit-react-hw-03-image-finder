@@ -1,10 +1,19 @@
-// import PropTypes from 'prop-types';
-export const ImageGalleryItem = () => {
+import PropTypes from 'prop-types';
+
+import { Overlay, ModalDiv } from 'services/Common.styled';
+
+export const Modal = ({ tags, largeImageURL, onBackdropClick }) => {
   return (
-    <div class="overlay">
-      <div class="modal">
-        <img src="" alt="" />
-      </div>
-    </div>
+    <Overlay onClick={onBackdropClick}>
+      <ModalDiv>
+        <img src={largeImageURL} alt={tags} />
+      </ModalDiv>
+    </Overlay>
   );
+};
+
+Modal.propTypes = {
+  tags: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  onBackdropClick: PropTypes.func.isRequired,
 };
